@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project name="helloworld" basedir="." default="build">
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="bin"/>
+
+	<path id="classpath">
+      <pathelement path="${build.dir}"/>
+   </path>
+
+
+	<target name="build" description="Compile main source tree java files">
+		<mkdir dir="${build.dir}"/>
+		<javac destdir="${build.dir}" includeantruntime="false">
+			<src path="${src.dir}"/>
+		</javac>
+	</target>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="**/*.class"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="run">
+      <java fork="yes" failonerror="yes" classname="Hello">
+      	<classpath refid="classpath"/>
+      </java>
+   </target>
+</project>
