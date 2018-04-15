@@ -1,31 +1,32 @@
-<?xml version="1.0"?>
-<project name="helloworld" basedir="." default="build">
-	<property name="src.dir" value="src"/>
-	<property name="build.dir" value="bin"/>
-
-	<path id="classpath">
-      <pathelement path="${build.dir}"/>
+<project name="JunitTest" default="test" basedir=".">
+   <!-- 测试文件路径 -->
+   <property name="testdir" location="test" />
+   <!-- 源代码路径 -->
+   <property name="srcdir" location="src" />
+   <!-- 设置classpath -->
+   <path id="classpath.test">
+      <pathelement path="/lib/junit-4.10.jar" />
+      <pathelement path="${testdir}" />
+      <pathelement path="${srcdir}" />
    </path>
-
-
-	<target name="build" description="Compile main source tree java files">
-		<mkdir dir="${build.dir}"/>
-		<javac destdir="${build.dir}" includeantruntime="false">
-			<src path="${src.dir}"/>
-		</javac>
-	</target>
-
-	<target name="clean">
-		<delete>
-			<fileset dir="${build.dir}">
-				<include name="**/*.class"/>
-			</fileset>
-		</delete>
-	</target>
-
-	<target name="run">
-      <java fork="yes" failonerror="yes" classname="Hello">
-      	<classpath refid="classpath"/>
-      </java>
+   <!-- 清理编译文件 -->
+   <target name="clean">
+      <delete>
+         <fileset dir="${testdir}" includes="**/*.class" />
+      </delete>
+   </target>
+   <!-- 编译源代码 -->
+   <target name="compile" depends="clean">
+      <javac srcdir="${srcdir}" destdir="${testdir}" includeantruntime="true">
+         <classpath refid="classpath.test"/>
+      </javac>
+   </target>
+   <!-- 进行单元测试 -->
+   <target name="test" depends="compile">
+      <junit>
+         <classpath refid="classpath.test"/>
+         <formatter type="brief" usefile="false" />
+         <test name="TestHello" />
+      </junit>
    </target>
 </project>
